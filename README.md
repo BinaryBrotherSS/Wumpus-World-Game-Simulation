@@ -5,6 +5,9 @@ A Python implementation of the classic "Wumpus World" problem from *Artificial I
 ## Overview
 This project simulates the environment where an AI agent must navigate a 4x4 grid to find Gold while avoiding deadly Pits and the Wumpus monster.
 
+**Feature: Fog of War**
+The map is initially hidden. The agent (and the player) can only see the contents of the cells they have visited. Unvisited areas are marked with `?`. The full map is revealed only upon Victory or Death.
+
 ## Game Rules
 - **Grid:** 4x4 layout.
 - **Start:** Agent starts at coordinates (0,0).
@@ -16,16 +19,17 @@ This project simulates the environment where an AI agent must navigate a 4x4 gri
   - **Breeze (B):** Felt in cells adjacent to a Pit.
   - **Stench (S):** Smelled in cells adjacent to the Wumpus.
   - **Glitter:** Perceived when in the same cell as the Gold.
-- **Actions:**
-  - **Move:** Forward, Turn Left, Turn Right.
-  - **Shoot:** The agent has 1 arrow to kill the Wumpus. If the Wumpus dies, the "Stench" is removed.
+- **Map Symbols:**
+  - **A:** Agent (You)
+  - **?:** Unknown/Unvisited area
+  - **. :** Safe visited empty cell
 
 ## Controls
 - `f` : Move Forward
 - `l` : Turn Left
 - `r` : Turn Right
 - `g` : Grab Gold
-- `s` : Shoot Arrow
+- `s` : Shoot Arrow (Kills Wumpus and removes Stench)
 - `q` : Quit Game
 
 ## How to Run
