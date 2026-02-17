@@ -1,18 +1,4 @@
-"""
-Wumpus World Game Simulation (Hidden Map Version)
--------------------------------------------------
-Standard AI environment with Fog of War logic.
-The map is hidden ('?') until the agent visits a cell.
 
-Legend:
-- P: Pit (Deadly)
-- W: Wumpus (Deadly, emits Stench)
-- G: Gold (Goal)
-- A: Agent
-- B: Breeze (Adjacent to Pit)
-- S: Stench (Adjacent to Wumpus)
-- ?: Unknown/Unvisited area
-"""
 
 import random
 import os
@@ -21,22 +7,29 @@ class Agent:
     def __init__(self):
         self.row = 0
         self.col = 0
-        # Directions: 0: East, 1: North, 2: West, 3: South
+        # Directions:
+        # 0: East
+        # 1: North
+        # 2: West
+        # 3: South
         self.direction = 0
-        self.score = 0
         self.has_gold = False
         self.has_arrow = True
         self.is_alive = True
         self.messages = []
 
-    def turn_left(self):
-        self.direction = (self.direction + 1) % 4
-        self.messages.append(f"Turned Left. Facing: {self.get_direction_name()}")
-
-    def turn_right(self):
-        self.direction = (self.direction - 1) % 4
-        self.messages.append(f"Turned Right. Facing: {self.get_direction_name()}")
-
+    def up(self):
+        self.direction = 1
+        self.messages.append(f"Turned. Facing: {self.get_direction_name()}")
+    def down(self):
+        self.direction = 3
+        self.messages.append(f"Turned. Facing: {self.get_direction_name()}")
+    def left(self):
+        self.direction = 2
+        self.messages.append(f"Turned. Facing: {self.get_direction_name()}")
+    def right(self):
+        self.direction = 0
+        self.messages.append(f"Turned. Facing: {self.get_direction_name()}")
     def get_direction_name(self):
         dirs = ["East", "North", "West", "South"]
         return dirs[self.direction]
@@ -55,6 +48,17 @@ class Agent:
         elif self.direction == 2: return 0, -1
         elif self.direction == 3: return -1, 0
 
+""" def turn_left(self):
+        self.direction = (self.direction + 1) % 4
+        self.messages.append(f"Turned Left. Facing: {self.get_direction_name()}")
+
+    def turn_right(self):
+        self.direction = (self.direction - 1) % 4
+        self.messages.append(f"Turned Right. Facing: {self.get_direction_name()}")
+
+    def turn_back(self):
+        self.direction = (self.direction + 2) % 4
+        self.messages.append(f"Turned Back. Facing: {self.get_direction_name()}") """
 
 class WumpusWorld:
     def __init__(self):
@@ -135,8 +139,10 @@ class WumpusWorld:
             else:
                 self.agent.messages.append("Bump! You hit a wall.")
 
-        elif action == 'l': self.agent.turn_left()
-        elif action == 'r': self.agent.turn_right()
+        elif action == 'w': self.agent.up()
+        elif action == 'd': self.agent.right()
+        elif action == 's':self.agent.down()
+        elif action == 'a':self.agent.left()
 
         elif action == 'g':
             if 'G' in self.grid[self.agent.row][self.agent.col]:
@@ -146,7 +152,7 @@ class WumpusWorld:
             else:
                 self.agent.messages.append("No gold here.")
 
-        elif action == 's':
+        elif action == "e":
             if self.agent.has_arrow:
                 self.agent.has_arrow = False
                 self.agent.messages.append("You shot an arrow!")
@@ -231,8 +237,8 @@ class WumpusWorld:
             print(f" > {msg}")
 
         print("\n[CONTROLS]")
-        print(" f : Forward | l : Left | r : Right")
-        print(" s : Shoot   | g : Grab | q : Quit")
+        print("\nq:Quit| w : ^ |e:Shoot")
+        print("a : < | s : v | d : > |f : forward|g : Grab the Gold")
         print("==============================================")
 
 # --- Main Loop ---
@@ -253,7 +259,7 @@ if __name__ == "__main__":
         if cmd == 'q':
             print("Game Quit.")
             break
-            
+
         game.step(cmd)
 
         # Check if died in this step
