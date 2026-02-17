@@ -1,19 +1,3 @@
-"""
-Wumpus World Game Simulation (Hidden Map Version)
--------------------------------------------------
-Standard AI environment with Fog of War logic.
-The map is hidden ('?') until the agent visits a cell.
-
-Legend:
-- P: Pit (Deadly)
-- W: Wumpus (Deadly, emits Stench)
-- G: Gold (Goal)
-- A: Agent
-- B: Breeze (Adjacent to Pit)
-- S: Stench (Adjacent to Wumpus)
-- ?: Unknown/Unvisited area
-"""
-
 import random
 import os
 
@@ -23,7 +7,6 @@ class Agent:
         self.col = 0
         # Directions: 0: East, 1: North, 2: West, 3: South
         self.direction = 0
-        self.score = 0
         self.has_gold = False
         self.has_arrow = True
         self.is_alive = True
@@ -61,7 +44,7 @@ class WumpusWorld:
         self.size = 4
         self.grid = [['' for _ in range(self.size)] for _ in range(self.size)]
         self.agent = Agent()
-        # Track visited cells for Fog of War
+        # Track visited cells
         self.visited = set()
         self.visited.add((0, 0)) # Start point is always visible
 
@@ -253,7 +236,7 @@ if __name__ == "__main__":
         if cmd == 'q':
             print("Game Quit.")
             break
-            
+
         game.step(cmd)
 
         # Check if died in this step
